@@ -21,7 +21,7 @@
       "bulletsPerSection": [3, 5]
     },
     "interview": {
-      "personas": ["普通面", "压力面"],
+      "personas": ["普通面", "压力面", "技术深挖", "HR+业务面"],
       "aiRecordedInterview": true,
       "groupInterview": "auto"
     },

@@ -109,6 +109,7 @@ def init(args):
         "dataRoot": root,
         "profile": args.profile,
         "qualityGate": args.gate,
+        "piiDenylist": [],
         "identity": {
             "name": args.name or "",
             "school": args.school or "",
@@ -122,6 +123,12 @@ def init(args):
                 "noObjective": args.profile == "campus-cn",
                 "noSkillSection": args.profile != "campus-tech",
                 "noPhoto": True,
+                "bulletsPerSection": [3, 5],
+            },
+            "interview": {
+                "personas": ["普通面", "压力面", "技术深挖", "HR+业务面"],
+                "aiRecordedInterview": True,
+                "groupInterview": "auto",
             },
             "quality": gate,
         },
