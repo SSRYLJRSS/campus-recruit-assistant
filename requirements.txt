@@ -1,0 +1,7 @@
+# 只有在生成 docx / PDF 时才需要；建库、打分、定制、自检、导出走标准库即可。
+python-docx>=1.1
+docxtpl>=0.16
+PyMuPDF>=1.23
+
+# 可选：Windows 下走 Office / WPS 转 PDF 的兼容路径
+# pywin32>=306; sys_platform == "win32"

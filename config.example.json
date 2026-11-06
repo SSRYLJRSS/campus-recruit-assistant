@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "setupDate": "YYYY-MM-DD",
+  "dataRoot": "C:/Users/<you>/recruit-data",
+  "profile": "campus-cn",
+  "qualityGate": "standard",
+  "identity": {
+    "name": "",
+    "school": "",
+    "major": "",
+    "gradYear": ""
+  },
+  "piiDenylist": [],
+  "overrides": {
+    "resume": {
+      "noObjective": true,
+      "noSkillSection": true,
+      "noPhoto": true,
+      "selfEvalRange": [140, 180],
+      "maxPages": 1,
+      "bulletsPerSection": [3, 5]
+    },
+    "interview": {
+      "personas": ["普通面", "压力面"],
+      "aiRecordedInterview": true,
+      "groupInterview": "auto"
+    },
+    "quality": {
+      "reviewRounds": 2,
+      "passScore": 8
+    }
+  }
+}
