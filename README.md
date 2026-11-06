@@ -61,7 +61,7 @@ git clone https://github.com/SSRYLJRSS/campus-recruit-assistant.git
 
 ## 快速开始
 
-直接用日常说法提要求，不用记命令：
+第一次用会先带你建**简历库**——没有库，改简历和模拟面试都没有素材。建好之后直接用日常说法提要求，不用记命令：
 
 ```text
 帮我建简历库，我先把经历都倒给你

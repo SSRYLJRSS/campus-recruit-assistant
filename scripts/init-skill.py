@@ -20,6 +20,7 @@ from datetime import date
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
 except Exception:
     pass
 
@@ -60,6 +61,14 @@ def check():
         missing = [d for d in SUBDIRS if not os.path.isdir(os.path.join(root, d.replace("/", os.sep)))]
         if missing:
             problems.append(f"目录骨架缺失 {len(missing)} 项: " + ", ".join(missing[:4]))
+        else:
+            try:
+                probe = os.path.join(root, ".write_probe")
+                with open(probe, "w", encoding="utf-8") as _f:
+                    _f.write("x")
+                os.remove(probe)
+            except OSError as e:
+                problems.append(f"dataRoot 不可写: {root} ({e})")
     if cfg.get("profile") not in PROFILES:
         problems.append(f"profile 非法: {cfg.get('profile')}")
     if problems:
@@ -73,13 +82,22 @@ def init(args):
         return 2
 
     root = norm(args.data_root)
+    if not os.path.isabs(root):
+        print(f"错误：--data-root 必须是绝对路径，收到：{args.data_root}\n"
+              f"例：python scripts/init-skill.py --data-root \"<数据目录绝对路径>\" "
+              f"--profile campus-cn --gate standard", file=sys.stderr)
+        return 2
     created, existing = [], []
     for d in SUBDIRS:
         full = os.path.join(root, d.replace("/", os.sep))
         if os.path.isdir(full):
             existing.append(d)
         else:
-            os.makedirs(full, exist_ok=True)
+            try:
+                os.makedirs(full, exist_ok=True)
+            except OSError as e:
+                print(f"错误：无法创建目录 {full}：{e}\n请换一个可写的绝对路径。", file=sys.stderr)
+                return 2
             created.append(d)
 
     gate = GATES[args.gate]
@@ -108,9 +126,13 @@ def init(args):
             "quality": gate,
         },
     }
-    with open(CONFIG_PATH, "w", encoding="utf-8", newline="\n") as f:
-        json.dump(cfg, f, ensure_ascii=False, indent=2)
-        f.write("\n")
+    try:
+        with open(CONFIG_PATH, "w", encoding="utf-8", newline="\n") as f:
+            json.dump(cfg, f, ensure_ascii=False, indent=2)
+            f.write("\n")
+    except OSError as e:
+        print(f"错误：无法写入配置文件 {CONFIG_PATH}：{e}", file=sys.stderr)
+        return 2
 
     if args.json:
         print(json.dumps({"ok": True, "config": cfg, "created": created,
